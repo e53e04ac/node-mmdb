@@ -1,0 +1,29 @@
+{
+  "name": "node-mmdb",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [],
+  "author": "e53e04ac <e53e04ac@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/e53e04ac/node-mmdb.git"
+  },
+  "bugs": {
+    "url": "https://github.com/e53e04ac/node-mmdb/issues"
+  },
+  "homepage": "https://github.com/e53e04ac/node-mmdb#readme",
+  "main": "./src/index.js",
+  "devDependencies": {
+    "@types/chai": "^4.2.15",
+    "@types/mocha": "^8.2.1",
+    "@types/node": "^14.14.31",
+    "chai": "^4.3.3",
+    "mocha": "^8.3.1",
+    "nyc": "^15.1.0"
+  },
+  "scripts": {
+    "test": "mocha ./test/*.test.js",
+    "coverage": "nyc --reporter=html --reporter=text npm run test"
+  }
+}
