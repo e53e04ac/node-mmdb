@@ -54,7 +54,7 @@ const { MMDB } = (() => {
         };
         Utilities.expand = (bytes, size) => {
             const expandedBytes = Buffer.alloc(size, 0);
-            bytes.copy(expandedBytes, size - bytes.length, 0, bytes.length)
+            bytes.copy(expandedBytes, size - bytes.length, 0, bytes.length);
             return expandedBytes;
         };
         return { Utilities };
@@ -465,22 +465,22 @@ const { MMDB } = (() => {
                             const decodedSubDataField = _it.decodeMmdbDataField(buffer, dataSectionPosition, subDataField);
                             return decodedSubDataField;
                         }
-                    };
+                    }
                     case 2: {
                         return dataField.payload;
-                    };
+                    }
                     case 3: {
                         return dataField.payload;
-                    };
+                    }
                     case 4: {
                         return dataField.payload;
-                    };
+                    }
                     case 5: {
                         return dataField.payload;
-                    };
+                    }
                     case 6: {
                         return dataField.payload;
-                    };
+                    }
                     case 7: {
                         /** @type {MMDBMap} */
                         const pairs = ts.lazy(dataField.payload);
@@ -493,16 +493,16 @@ const { MMDB } = (() => {
                             map[decodedKey] = decodedValue;
                         }
                         return map;
-                    };
+                    }
                     case 8: {
                         return dataField.payload;
-                    };
+                    }
                     case 9: {
                         return dataField.payload;
-                    };
+                    }
                     case 10: {
                         return dataField.payload;
-                    };
+                    }
                     case 11: {
                         /** @type {MMDBArray} */
                         const values = ts.lazy(dataField.payload);
@@ -513,19 +513,19 @@ const { MMDB } = (() => {
                             array.push(decodedValue);
                         }
                         return array;
-                    };
+                    }
                     case 12: {
                         return dataField.payload;
-                    };
+                    }
                     case 13: {
                         return dataField.payload;
-                    };
+                    }
                     case 14: {
                         return dataField.payload;
-                    };
+                    }
                     case 15: {
                         return dataField.payload;
-                    };
+                    }
                     default: {
                         throw new Error();
                     }
