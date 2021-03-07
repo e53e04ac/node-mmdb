@@ -296,3 +296,5 @@ type MMDBConstructorOptions = {
 type MMDBConstructor = {
     (options: MMDBConstructorOptions): MMDB;
 };
+
+export const MMDB: MMDBConstructor;

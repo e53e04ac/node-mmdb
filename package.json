@@ -13,6 +13,7 @@
     "url": "https://github.com/e53e04ac/node-mmdb/issues"
   },
   "homepage": "https://github.com/e53e04ac/node-mmdb#readme",
+  "types": "./type/index.d.ts",
   "main": "./src/index.js",
   "devDependencies": {
     "@types/chai": "^4.2.15",
