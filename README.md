@@ -1,5 +1,18 @@
 # node-mmdb
 
+## Requirements
+
+- Node.js (v15.11.0)
+- MMDB database file (v2.0)
+
+## Install
+
+~~~~~ sh
+npm install e53e04ac/node-mmdb
+~~~~~
+
+## Sample
+
 ~~~~~ js
 
 const { MMDB } = require('node-mmdb');
