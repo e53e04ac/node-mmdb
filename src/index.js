@@ -10,7 +10,7 @@ const { MMDB } = (() => {
 
     const { TypeScript } = (() => {
 
-        /** @typedef TypeScript @type {import('../type').TypeScript} */
+        /** @typedef TypeScript @type {import('../types').TypeScript} */
 
         /** @type {TypeScript} */
         const TypeScript = {};
@@ -25,7 +25,7 @@ const { MMDB } = (() => {
 
     const { Standards } = (() => {
 
-        /** @typedef Standards @type {import('../type').Standards} */
+        /** @typedef Standards @type {import('../types').Standards} */
 
         const fs = require('fs');
 
@@ -40,7 +40,7 @@ const { MMDB } = (() => {
 
     const { Utilities } = (() => {
 
-        /** @typedef Utilities @type {import('../type').Utilities} */
+        /** @typedef Utilities @type {import('../types').Utilities} */
 
         /** @type {Utilities} */
         const Utilities = {};
@@ -65,12 +65,12 @@ const { MMDB } = (() => {
 
     const { MMDBBufferCursor } = (() => {
 
-        /** @typedef _MMDBBufferCursor @type {import('../type')._MMDBBufferCursor} */
-        /** @typedef MMDBBufferCursorConstructorOptions @type {import('../type').MMDBBufferCursorConstructorOptions} */
-        /** @typedef MMDBBufferCursor @type {import('../type').MMDBBufferCursor} */
-        /** @typedef MMDBBufferCursorConstructor @type {import('../type').MMDBBufferCursorConstructor} */
-        /** @typedef MMDBMap @type {import('../type').MMDBMap} */
-        /** @typedef MMDBArray @type {import('../type').MMDBArray} */
+        /** @typedef _MMDBBufferCursor @type {import('../types')._MMDBBufferCursor} */
+        /** @typedef MMDBBufferCursorConstructorOptions @type {import('../types').MMDBBufferCursorConstructorOptions} */
+        /** @typedef MMDBBufferCursor @type {import('../types').MMDBBufferCursor} */
+        /** @typedef MMDBBufferCursorConstructor @type {import('../types').MMDBBufferCursorConstructor} */
+        /** @typedef MMDBMap @type {import('../types').MMDBMap} */
+        /** @typedef MMDBArray @type {import('../types').MMDBArray} */
 
         /** @type {MMDBBufferCursorConstructor} */
         const MMDBBufferCursor = (options) => {
@@ -425,14 +425,14 @@ const { MMDB } = (() => {
 
     const { MMDB } = (() => {
 
-        /** @typedef _MMDB @type {import('../type')._MMDB} */
-        /** @typedef MMDBConstructorOptions @type {import('../type').MMDBConstructorOptions} */
-        /** @typedef MMDB @type {import('../type').MMDB} */
-        /** @typedef MMDBConstructor @type {import('../type').MMDBConstructor} */
-        /** @typedef MMDBArray @type {import('../type').MMDBArray} */
-        /** @typedef MMDBMap @type {import('../type').MMDBMap} */
-        /** @typedef MMDBMetadata @type {import('../type').MMDBMetadata} */
-        /** @typedef MMDBData @type {import('../type').MMDBData} */
+        /** @typedef _MMDB @type {import('../types')._MMDB} */
+        /** @typedef MMDBConstructorOptions @type {import('../types').MMDBConstructorOptions} */
+        /** @typedef MMDB @type {import('../types').MMDB} */
+        /** @typedef MMDBConstructor @type {import('../types').MMDBConstructor} */
+        /** @typedef MMDBArray @type {import('../types').MMDBArray} */
+        /** @typedef MMDBMap @type {import('../types').MMDBMap} */
+        /** @typedef MMDBMetadata @type {import('../types').MMDBMetadata} */
+        /** @typedef MMDBData @type {import('../types').MMDBData} */
 
         /** @type {MMDBConstructor} */
         const MMDB = (options) => {

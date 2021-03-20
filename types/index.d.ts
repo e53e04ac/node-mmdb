@@ -1,5 +1,5 @@
 /*!
- * node-mmdb/type/index.d.ts
+ * node-mmdb/types/index.d.ts
  * e53e04ac <e53e04ac@gmail.com>
  * MIT License
  */
