@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- Node.js (v15)
+- Node.js (v17.6.0)
 - MMDB database file (v2.0)
 
 ## Installation
@@ -15,9 +15,17 @@ npm install e53e04ac/node-mmdb
 
 ~~~~~ js
 const { MMDB } = require('node-mmdb');
-const mmdb = MMDB({ mmdbFilePath: 'path/to/database.mmdb' });
-await mmdb.load();
-const data = await mmdb.lookup({ address: '8.8.8.8' });
-console.dir({ data }, { depth: Infinity });
-await mmdb.unload();
+
+(async function main() {
+
+    const mmdb = MMDB({ mmdbFilePath: 'path/to/database.mmdb' });
+
+    await mmdb.load();
+
+    const data = await mmdb.lookup({ address: '8.8.8.8' });
+    console.dir({ data }, { depth: Infinity });
+
+    await mmdb.unload();
+
+})();
 ~~~~~

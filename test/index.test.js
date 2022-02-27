@@ -14,15 +14,20 @@ describe('index.js', async () => {
 
     it('coverage', async () => {
 
-        const mmdb = MMDB({ mmdbFilePath: './local/database.mmdb' });
+        const mmdb = MMDB({
+            mmdbFilePath: './local/database.mmdb',
+        });
+
         await mmdb.load();
+
         const address = [
             Math.floor(Math.random() * 255),
             Math.floor(Math.random() * 255),
             Math.floor(Math.random() * 255),
-            Math.floor(Math.random() * 255)
+            Math.floor(Math.random() * 255),
         ].join('.');
         const data = await mmdb.lookup({ address });
+
         await mmdb.unload();
 
     });

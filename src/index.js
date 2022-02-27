@@ -6,190 +6,218 @@
 
 'use strict';
 
-const { MMDB } = (() => {
+const { Helper } = (() => {
 
-    const { TypeScript } = (() => {
+    /** @typedef {import('../types').MMDB.Helper._Self} _Self */
+    /** @typedef {import('../types').MMDB.Helper.Self} Self */
+    /** @typedef {import('../types').MMDB.Helper.Constructor} Constructor */
 
-        /** @typedef TypeScript @type {import('../types').TypeScript} */
+    /** @type {Constructor} */
+    const Constructor = ((options) => {
 
-        /** @type {TypeScript} */
-        const TypeScript = {};
-        TypeScript.lazy = (value) => {
-            return value;
-        };
-        return { TypeScript };
+        const _options = ({});
 
-    })();
+        /** @type {_Self} */
+        const _self = ({
+            options: (() => {
+                return options;
+            }),
+            _options: (() => {
+                return _options;
+            }),
+        });
 
-    const ts = TypeScript;
+        /** @type {Self} */
+        const self = ({
+            _Helper: (() => {
+                return _self;
+            }),
+            numbers: (function* (begin, end, step) {
+                if (step < 0) {
+                    throw new Error();
+                }
+                for (let value = begin; value < end; value += step) {
+                    yield value;
+                }
+            }),
+            expand: ((bytes, size) => {
+                const expandedBytes = Buffer.alloc(size, 0);
+                bytes.copy(expandedBytes, size - bytes.length, 0, bytes.length);
+                return expandedBytes;
+            }),
+        });
 
-    const { Standards } = (() => {
+        return self;
 
-        /** @typedef Standards @type {import('../types').Standards} */
+    });
 
-        const fs = require('fs');
+    return { Helper: Constructor };
 
-        /** @type {Standards} */
-        const Standards = {};
-        Standards.fs = fs;
-        return { Standards };
+})();
 
-    })();
+const { BufferCursor } = (() => {
 
-    const std = Standards;
+    /** @typedef {import('../types').MMDB.Types.Array} MMDBArray */
+    /** @typedef {import('../types').MMDB.Types.Map} MMDBMap */
 
-    const { Utilities } = (() => {
+    /** @typedef {import('../types').MMDB.BufferCurosr._Self} _Self */
+    /** @typedef {import('../types').MMDB.BufferCurosr.Self} Self */
+    /** @typedef {import('../types').MMDB.BufferCurosr.Constructor} Constructor */
 
-        /** @typedef Utilities @type {import('../types').Utilities} */
+    const helper = Helper({});
 
-        /** @type {Utilities} */
-        const Utilities = {};
-        Utilities.numbers = function* (begin, end, step) {
-            if (step < 0) {
-                throw new Error();
-            }
-            for (let value = begin; value < end; value += step) {
-                yield value;
-            }
-        };
-        Utilities.expand = (bytes, size) => {
-            const expandedBytes = Buffer.alloc(size, 0);
-            bytes.copy(expandedBytes, size - bytes.length, 0, bytes.length);
-            return expandedBytes;
-        };
-        return { Utilities };
+    /** @type {Constructor} */
+    const Constructor = ((options) => {
 
-    })();
+        const _options = ({
+            buffer: options.buffer,
+            position: options.position,
+        });
 
-    const utl = Utilities;
+        /** @type {_Self} */
+        const _self = ({
+            options: (() => {
+                return options;
+            }),
+            _options: (() => {
+                return _options;
+            }),
+        });
 
-    const { MMDBBufferCursor } = (() => {
-
-        /** @typedef _MMDBBufferCursor @type {import('../types')._MMDBBufferCursor} */
-        /** @typedef MMDBBufferCursorConstructorOptions @type {import('../types').MMDBBufferCursorConstructorOptions} */
-        /** @typedef MMDBBufferCursor @type {import('../types').MMDBBufferCursor} */
-        /** @typedef MMDBBufferCursorConstructor @type {import('../types').MMDBBufferCursorConstructor} */
-        /** @typedef MMDBMap @type {import('../types').MMDBMap} */
-        /** @typedef MMDBArray @type {import('../types').MMDBArray} */
-
-        /** @type {MMDBBufferCursorConstructor} */
-        const MMDBBufferCursor = (options) => {
-
-            /** @type {MMDBBufferCursorConstructorOptions} */
-            const _options = {};
-            _options.buffer = options.buffer;
-            _options.position = options.position;
-
-            /** @type {_MMDBBufferCursor} */
-            const _it = {};
-
-            /** @type {MMDBBufferCursor} */
-            const it = {};
-            it.buffer = () => {
+        /** @type {Self} */
+        const self = ({
+            _BufferCursor: (() => {
+                return _self;
+            }),
+            buffer: (() => {
                 return _options.buffer;
-            };
-            it.get = () => {
+            }),
+            get: (() => {
                 return _options.position;
-            };
-            it.set = (position) => {
-                return MMDBBufferCursor({
+            }),
+            set: ((position) => {
+                return Constructor({
                     buffer: _options.buffer,
-                    position
+                    position,
                 });
-            };
-            it.add = (size) => {
-                return MMDBBufferCursor({
+            }),
+            add: ((size) => {
+                return Constructor({
                     buffer: _options.buffer,
-                    position: _options.position + size
+                    position: _options.position + size,
                 });
-            };
-            it.testBytes = (size) => {
+            }),
+            canReadBytes: ((size) => {
                 return size >= 0 && _options.position + size <= _options.buffer.length;
-            };
-            it.readBytes = (size) => {
-                if (!it.testBytes(size)) {
+            }),
+            readBytes: ((size) => {
+                if (!self.canReadBytes(size)) {
                     throw new Error();
                 }
                 const value = _options.buffer.slice(_options.position, _options.position + size);
                 return {
-                    cursor: it.add(value.length),
-                    value
+                    cursor: self.add(value.length),
+                    value,
                 };
-            };
-            it.readObject = (size, decode) => {
-                const result = it.readBytes(size);
+            }),
+            readObject: ((size, decode) => {
+                const result = self.readBytes(size);
                 return {
                     cursor: result.cursor,
-                    value: decode(result.value)
+                    value: decode(result.value),
                 };
-            };
-            it.readMmdbPointer = (payloadSize, payloadPart) => {
+            }),
+            readMmdbPointer: ((payloadSize, payloadPart) => {
                 switch (payloadSize) {
                     case 0: {
-                        return it.readObject(1, (bytes) => bytes.readUIntBE(0, 1) + (payloadPart << 8));
+                        return self.readObject(1, (bytes) => {
+                            return bytes.readUIntBE(0, 1) + (payloadPart << 8);
+                        });
                     }
                     case 1: {
-                        return it.readObject(2, (bytes) => bytes.readUIntBE(0, 2) + (payloadPart << 16) + 2048);
+                        return self.readObject(2, (bytes) => {
+                            return bytes.readUIntBE(0, 2) + (payloadPart << 16) + 2048;
+                        });
                     }
                     case 2: {
-                        return it.readObject(3, (bytes) => bytes.readUIntBE(0, 3) + (payloadPart << 24) + 526336);
+                        return self.readObject(3, (bytes) => {
+                            return bytes.readUIntBE(0, 3) + (payloadPart << 24) + 526336;
+                        });
                     }
                     case 3: {
-                        return it.readObject(4, (bytes) => bytes.readUIntBE(0, 4));
+                        return self.readObject(4, (bytes) => {
+                            return bytes.readUIntBE(0, 4);
+                        });
                     }
                     default: {
                         throw new Error();
                     }
                 }
-            };
-            it.readMmdbUtf8String = (payloadSize) => {
+            }),
+            readMmdbUtf8String: ((payloadSize) => {
                 switch (payloadSize) {
                     case 0: {
-                        return it.readObject(0, () => '');
+                        return self.readObject(0, () => {
+                            return '';
+                        });
                     }
                     default: {
-                        return it.readObject(payloadSize, (bytes) => bytes.toString('utf8'));
+                        return self.readObject(payloadSize, (bytes) => {
+                            return bytes.toString('utf8');
+                        });
                     }
                 }
-            };
-            it.readMmdbDouble = (payloadSize) => {
+            }),
+            readMmdbDouble: ((payloadSize) => {
                 switch (payloadSize) {
                     case 8: {
-                        return it.readObject(payloadSize, (bytes) => bytes.readDoubleBE(0));
+                        return self.readObject(payloadSize, (bytes) => {
+                            return bytes.readDoubleBE(0);
+                        });
                     }
                     default: {
                         throw new Error();
                     }
                 }
-            };
-            it.readMmdbBytes = (payloadSize) => {
-                return it.readObject(payloadSize, (bytes) => bytes);
-            };
-            it.readMmdbUnsigned16BitInteger = (payloadSize) => {
+            }),
+            readMmdbBytes: ((payloadSize) => {
+                return self.readObject(payloadSize, (bytes) => {
+                    return bytes;
+                });
+            }),
+            readMmdbUnsigned16BitInteger: ((payloadSize) => {
                 switch (payloadSize) {
                     case 0: {
-                        return it.readObject(0, () => 0);
+                        return self.readObject(0, () => {
+                            return 0;
+                        });
                     }
                     default: {
-                        return it.readObject(payloadSize, (bytes) => bytes.readUIntBE(0, payloadSize));
+                        return self.readObject(payloadSize, (bytes) => {
+                            return bytes.readUIntBE(0, payloadSize);
+                        });
                     }
                 }
-            };
-            it.readMmdbUnsigned32BitInteger = (payloadSize) => {
+            }),
+            readMmdbUnsigned32BitInteger: ((payloadSize) => {
                 switch (payloadSize) {
                     case 0: {
-                        return it.readObject(0, () => 0);
+                        return self.readObject(0, () => {
+                            return 0;
+                        });
                     }
                     default: {
-                        return it.readObject(payloadSize, (bytes) => bytes.readUIntBE(0, payloadSize));
+                        return self.readObject(payloadSize, (bytes) => {
+                            return bytes.readUIntBE(0, payloadSize);
+                        });
                     }
                 }
-            };
-            it.readMmdbMap = (payloadSize) => {
-                let cursor = it.add(0);
+            }),
+            readMmdbMap: ((payloadSize) => {
+                let cursor = self.add(0);
                 /** @type {MMDBMap} */
                 const map = [];
-                for (const _ of utl.numbers(0, payloadSize, 1)) {
+                for (const _ of helper.numbers(0, payloadSize, 1)) {
                     const keyReadResult = cursor.readMmdbDataField();
                     const key = keyReadResult.value;
                     const valueReadResult = keyReadResult.cursor.readMmdbDataField();
@@ -199,44 +227,56 @@ const { MMDB } = (() => {
                 }
                 return {
                     cursor,
-                    value: map
+                    value: map,
                 };
-            };
-            it.readMmdbSigned32BitInteger = (payloadSize) => {
+            }),
+            readMmdbSigned32BitInteger: ((payloadSize) => {
                 switch (payloadSize) {
                     case 0: {
-                        return it.readObject(0, () => 0);
+                        return self.readObject(0, () => {
+                            return 0;
+                        });
                     }
                     default: {
-                        return it.readObject(payloadSize, (bytes) => bytes.readIntBE(0, payloadSize));
+                        return self.readObject(payloadSize, (bytes) => {
+                            return bytes.readIntBE(0, payloadSize);
+                        });
                     }
                 }
-            };
-            it.readMmdbUnsigned64BitInteger = (payloadSize) => {
+            }),
+            readMmdbUnsigned64BitInteger: ((payloadSize) => {
                 switch (payloadSize) {
                     case 0: {
-                        return it.readObject(0, () => Buffer.alloc(8, 0));
+                        return self.readObject(0, () => {
+                            return Buffer.alloc(8, 0);
+                        });
                     }
                     default: {
-                        return it.readObject(payloadSize, (bytes) => utl.expand(bytes, 8));
+                        return self.readObject(payloadSize, (bytes) => {
+                            return helper.expand(bytes, 8);
+                        });
                     }
                 }
-            };
-            it.readMmdbUnsigned128BitInteger = (payloadSize) => {
+            }),
+            readMmdbUnsigned128BitInteger: ((payloadSize) => {
                 switch (payloadSize) {
                     case 0: {
-                        return it.readObject(0, () => Buffer.alloc(16, 0));
+                        return self.readObject(0, () => {
+                            return Buffer.alloc(16, 0);
+                        });
                     }
                     default: {
-                        return it.readObject(payloadSize, (bytes) => utl.expand(bytes, 16));
+                        return self.readObject(payloadSize, (bytes) => {
+                            return helper.expand(bytes, 16);
+                        });
                     }
                 }
-            };
-            it.readMmdbArray = (payloadSize) => {
-                let cursor = it.add(0);
+            }),
+            readMmdbArray: ((payloadSize) => {
+                let cursor = self.add(0);
                 /** @type {MMDBArray} */
                 const array = [];
-                for (const _ of utl.numbers(0, payloadSize, 1)) {
+                for (const _ of helper.numbers(0, payloadSize, 1)) {
                     const valueReadResult = cursor.readMmdbDataField();
                     const value = valueReadResult.value;
                     array.push(value);
@@ -244,133 +284,157 @@ const { MMDB } = (() => {
                 }
                 return {
                     cursor,
-                    value: array
+                    value: array,
                 };
-            };
-            it.readMmdbDataCacheContainer = (payloadSize) => {
-                return it.readObject(payloadSize, (bytes) => bytes);
-            };
-            it.readMmdbEndMarker = (payloadSize) => {
+            }),
+            readMmdbDataCacheContainer: ((payloadSize) => {
+                return self.readObject(payloadSize, (bytes) => {
+                    return bytes;
+                });
+            }),
+            readMmdbEndMarker: ((payloadSize) => {
                 switch (payloadSize) {
                     case 0: {
-                        return it.readObject(0, () => null);
+                        return self.readObject(0, () => {
+                            return null;
+                        });
                     }
                     default: {
                         throw new Error();
                     }
                 }
-            };
-            it.readMmdbBoolean = (payloadSize) => {
+            }),
+            readMmdbBoolean: ((payloadSize) => {
                 switch (payloadSize) {
                     case 0: {
-                        return it.readObject(0, () => false);
+                        return self.readObject(0, () => {
+                            return false;
+                        });
                     }
                     case 1: {
-                        return it.readObject(0, () => true);
+                        return self.readObject(0, () => {
+                            return true;
+                        });
                     }
                     default: {
                         throw new Error();
                     }
                 }
-            };
-            it.readMmdbFloat = (payloadSize) => {
+            }),
+            readMmdbFloat: ((payloadSize) => {
                 switch (payloadSize) {
                     case 4: {
-                        return it.readObject(payloadSize, (bytes) => bytes.readFloatBE(0));
+                        return self.readObject(payloadSize, (bytes) => {
+                            return bytes.readFloatBE(0);
+                        });
                     }
                     default: {
                         throw new Error();
                     }
                 }
-            };
-            it.readMmdbControlByte = () => {
-                return it.readObject(1, (bytes) => bytes.readUIntBE(0, 1));
-            };
-            it.readMmdbDataType = (controlByte) => {
-                const value = ((controlByte >> 5) & 0b00000111);
+            }),
+            readMmdbControlByte: (() => {
+                return self.readObject(1, (bytes) => {
+                    return bytes.readUIntBE(0, 1);
+                });
+            }),
+            readMmdbDataType: ((controlByte) => {
+                const value = ((controlByte >> 5) & 0b0000_0111);
                 switch (value) {
                     case 0: {
-                        return it.readObject(1, (bytes) => 7 + bytes.readUIntBE(0, 1));
+                        return self.readObject(1, (bytes) => {
+                            return 7 + bytes.readUIntBE(0, 1);
+                        });
                     }
                     default: {
-                        return it.readObject(0, () => value);
+                        return self.readObject(0, () => {
+                            return value;
+                        });
                     }
                 }
-            };
-            it.readMmdbPayloadSize = (controlByte) => {
-                const value = (controlByte & 0b00011111);
+            }),
+            readMmdbPayloadSize: ((controlByte) => {
+                const value = (controlByte & 0b0001_1111);
                 switch (value) {
                     case 29: {
-                        return it.readObject(1, (bytes) => 29 + bytes.readUIntBE(0, 1));
+                        return self.readObject(1, (bytes) => {
+                            return 29 + bytes.readUIntBE(0, 1);
+                        });
                     }
                     case 30: {
-                        return it.readObject(2, (bytes) => 285 + bytes.readUIntBE(0, 2));
+                        return self.readObject(2, (bytes) => {
+                            return 285 + bytes.readUIntBE(0, 2);
+                        });
                     }
                     case 31: {
-                        return it.readObject(3, (bytes) => 65821 + bytes.readUIntBE(0, 3));
+                        return self.readObject(3, (bytes) => {
+                            return 65821 + bytes.readUIntBE(0, 3);
+                        });
                     }
                     default: {
-                        return it.readObject(0, () => value);
+                        return self.readObject(0, () => {
+                            return value;
+                        });
                     }
                 }
-            };
-            it.readMmdbPayload = (dateType, payloadSize) => {
+            }),
+            readMmdbPayload: ((dateType, payloadSize) => {
                 switch (dateType) {
                     case 2: {
-                        return it.readMmdbUtf8String(payloadSize);
+                        return self.readMmdbUtf8String(payloadSize);
                     }
                     case 3: {
-                        return it.readMmdbDouble(payloadSize);
+                        return self.readMmdbDouble(payloadSize);
                     }
                     case 4: {
-                        return it.readMmdbBytes(payloadSize);
+                        return self.readMmdbBytes(payloadSize);
                     }
                     case 5: {
-                        return it.readMmdbUnsigned16BitInteger(payloadSize);
+                        return self.readMmdbUnsigned16BitInteger(payloadSize);
                     }
                     case 6: {
-                        return it.readMmdbUnsigned32BitInteger(payloadSize);
+                        return self.readMmdbUnsigned32BitInteger(payloadSize);
                     }
                     case 7: {
-                        return it.readMmdbMap(payloadSize);
+                        return self.readMmdbMap(payloadSize);
                     }
                     case 8: {
-                        return it.readMmdbSigned32BitInteger(payloadSize);
+                        return self.readMmdbSigned32BitInteger(payloadSize);
                     }
                     case 9: {
-                        return it.readMmdbUnsigned64BitInteger(payloadSize);
+                        return self.readMmdbUnsigned64BitInteger(payloadSize);
                     }
                     case 10: {
-                        return it.readMmdbUnsigned128BitInteger(payloadSize);
+                        return self.readMmdbUnsigned128BitInteger(payloadSize);
                     }
                     case 11: {
-                        return it.readMmdbArray(payloadSize);
+                        return self.readMmdbArray(payloadSize);
                     }
                     case 12: {
-                        return it.readMmdbDataCacheContainer(payloadSize);
+                        return self.readMmdbDataCacheContainer(payloadSize);
                     }
                     case 13: {
-                        return it.readMmdbEndMarker(payloadSize);
+                        return self.readMmdbEndMarker(payloadSize);
                     }
                     case 14: {
-                        return it.readMmdbBoolean(payloadSize);
+                        return self.readMmdbBoolean(payloadSize);
                     }
                     case 15: {
-                        return it.readMmdbFloat(payloadSize);
+                        return self.readMmdbFloat(payloadSize);
                     }
                     default: {
                         throw new Error();
                     }
                 }
-            };
-            it.readMmdbDataField = () => {
-                const controlByteReadResult = it.readMmdbControlByte();
+            }),
+            readMmdbDataField: (() => {
+                const controlByteReadResult = self.readMmdbControlByte();
                 const controlByte = controlByteReadResult.value;
                 const dataTypeReadResult = controlByteReadResult.cursor.readMmdbDataType(controlByte);
                 const dataType = dataTypeReadResult.value;
                 if (dataType === 1) {
-                    const payloadSize = ((controlByte >> 3) & 0b00000011);
-                    const payloadPart = (controlByte & 0b00000111);
+                    const payloadSize = ((controlByte >> 3) & 0b0000_0011);
+                    const payloadPart = (controlByte & 0b0000_0111);
                     const pointerReadResult = dataTypeReadResult.cursor.readMmdbPointer(payloadSize, payloadPart);
                     const payload = pointerReadResult.value;
                     return {
@@ -378,8 +442,8 @@ const { MMDB } = (() => {
                         value: {
                             dataType,
                             payloadSize,
-                            payload
-                        }
+                            payload,
+                        },
                     };
                 } else {
                     const payloadSizeReadResult = dataTypeReadResult.cursor.readMmdbPayloadSize(controlByte);
@@ -391,59 +455,79 @@ const { MMDB } = (() => {
                         value: {
                             dataType,
                             payloadSize,
-                            payload
-                        }
+                            payload,
+                        },
                     };
                 }
-            };
-            it.readMmdbNode = (nodeSize) => {
-                return it.readObject(nodeSize, (bytes) => {
+            }),
+            readMmdbNode: ((nodeSize) => {
+                return self.readObject(nodeSize, (bytes) => {
                     if (nodeSize % 2 == 0) {
                         const size = nodeSize / 2;
                         const left = bytes.readUIntBE(0, size);
                         const right = bytes.readUIntBE(size, size);
-                        return { left, right };
+                        return {
+                            left,
+                            right,
+                        };
                     } else {
                         const size = (nodeSize - 1) / 2;
                         const left0 = bytes.readUIntBE(0, size);
                         const left1right1 = bytes.readUInt8(size);
                         const right0 = bytes.readUIntBE(size + 1, size);
-                        const left1 = ((left1right1 >> 4) & 0b00001111);
-                        const right1 = (left1right1 & 0b00001111);
+                        const left1 = ((left1right1 >> 4) & 0b0000_1111);
+                        const right1 = (left1right1 & 0b0000_1111);
                         const left = left0 + (left1 << (size * 8));
                         const right = right0 + (right1 << (size * 8));
-                        return { left, right };
+                        return {
+                            left,
+                            right,
+                        };
                     }
                 });
-            };
-            return it;
+            }),
+        });
 
-        };
-        return { MMDBBufferCursor };
+        return self;
 
-    })();
+    });
 
-    const { MMDB } = (() => {
+    return { BufferCursor: Constructor };
 
-        /** @typedef _MMDB @type {import('../types')._MMDB} */
-        /** @typedef MMDBConstructorOptions @type {import('../types').MMDBConstructorOptions} */
-        /** @typedef MMDB @type {import('../types').MMDB} */
-        /** @typedef MMDBConstructor @type {import('../types').MMDBConstructor} */
-        /** @typedef MMDBArray @type {import('../types').MMDBArray} */
-        /** @typedef MMDBMap @type {import('../types').MMDBMap} */
-        /** @typedef MMDBMetadata @type {import('../types').MMDBMetadata} */
-        /** @typedef MMDBData @type {import('../types').MMDBData} */
+})();
 
-        /** @type {MMDBConstructor} */
-        const MMDB = (options) => {
+const { MMDB } = (() => {
 
-            /** @type {MMDBConstructorOptions} */
-            const _options = {};
-            _options.mmdbFilePath = options.mmdbFilePath;
+    /** @typedef {import('../types').MMDB.Types.Array} MMDBArray */
+    /** @typedef {import('../types').MMDB.Types.Data} MMDBData */
+    /** @typedef {import('../types').MMDB.Types.Map} MMDBMap */
+    /** @typedef {import('../types').MMDB.Types.Metadata} MMDBMetadata */
 
-            /** @type {_MMDB} */
-            const _it = {};
-            _it.findMmdbMetadataOffset = (buffer) => {
+    /** @typedef {import('../types').MMDB.MMDB._Self} _Self */
+    /** @typedef {import('../types').MMDB.MMDB.Self} Self */
+    /** @typedef {import('../types').MMDB.MMDB.Constructor} Constructor */
+
+    const fs = require('fs');
+
+    /** @type {{ <T>(value: any): T; }} */
+    const __cast__ = (value) => value;
+
+    /** @type {Constructor} */
+    const Constructor = ((options) => {
+
+        const _options = ({
+            mmdbFilePath: options.mmdbFilePath,
+        });
+
+        /** @type {_Self} */
+        const _self = ({
+            options: (() => {
+                return options;
+            }),
+            _options: (() => {
+                return _options;
+            }),
+            findMmdbMetadataOffset: ((buffer) => {
                 const sequence = Buffer.from([0xab, 0xcd, 0xef, 0x4d, 0x61, 0x78, 0x4d, 0x69, 0x6e, 0x64, 0x2e, 0x63, 0x6f, 0x6d]);
                 const sequencePosition = buffer.lastIndexOf(sequence);
                 if (sequencePosition < 0) {
@@ -451,18 +535,18 @@ const { MMDB } = (() => {
                 }
                 const metadataPosition = sequencePosition + sequence.length;
                 return metadataPosition;
-            };
-            _it.getMmdbDataField = (buffer, position) => {
-                return MMDBBufferCursor({ buffer, position }).readMmdbDataField().value;
-            };
-            _it.decodeMmdbDataField = (buffer, dataSectionPosition, dataField) => {
+            }),
+            getMmdbDataField: ((buffer, position) => {
+                return BufferCursor({ buffer, position }).readMmdbDataField().value;
+            }),
+            decodeMmdbDataField: ((buffer, dataSectionPosition, dataField) => {
                 switch (dataField.dataType) {
                     case 1: {
                         if (dataSectionPosition < 0) {
                             return undefined;
                         } else {
-                            const subDataField = _it.getMmdbDataField(buffer, dataSectionPosition + ts.lazy(dataField.payload));
-                            const decodedSubDataField = _it.decodeMmdbDataField(buffer, dataSectionPosition, subDataField);
+                            const subDataField = _self.getMmdbDataField(buffer, dataSectionPosition + __cast__(dataField.payload));
+                            const decodedSubDataField = _self.decodeMmdbDataField(buffer, dataSectionPosition, subDataField);
                             return decodedSubDataField;
                         }
                     }
@@ -483,13 +567,13 @@ const { MMDB } = (() => {
                     }
                     case 7: {
                         /** @type {MMDBMap} */
-                        const pairs = ts.lazy(dataField.payload);
+                        const pairs = __cast__(dataField.payload);
                         /** @type {Record<string, unknown>} */
                         const map = {};
                         for (const pair of pairs) {
                             /** @type {string} */
-                            const decodedKey = ts.lazy(_it.decodeMmdbDataField(buffer, dataSectionPosition, pair[0]));
-                            const decodedValue = _it.decodeMmdbDataField(buffer, dataSectionPosition, pair[1]);
+                            const decodedKey = __cast__(_self.decodeMmdbDataField(buffer, dataSectionPosition, pair[0]));
+                            const decodedValue = _self.decodeMmdbDataField(buffer, dataSectionPosition, pair[1]);
                             map[decodedKey] = decodedValue;
                         }
                         return map;
@@ -505,11 +589,11 @@ const { MMDB } = (() => {
                     }
                     case 11: {
                         /** @type {MMDBArray} */
-                        const values = ts.lazy(dataField.payload);
+                        const values = __cast__(dataField.payload);
                         /** @type {unknown[]} */
                         const array = [];
                         for (const value of values) {
-                            const decodedValue = _it.decodeMmdbDataField(buffer, dataSectionPosition, value);
+                            const decodedValue = _self.decodeMmdbDataField(buffer, dataSectionPosition, value);
                             array.push(decodedValue);
                         }
                         return array;
@@ -530,14 +614,14 @@ const { MMDB } = (() => {
                         throw new Error();
                     }
                 }
-            };
-            _it.getMmdbNode = (buffer, position, nodeSize) => {
-                return MMDBBufferCursor({ buffer, position }).readMmdbNode(nodeSize).value;
-            };
-            _it.getMmdbDataOffset = (buffer, nodeSize, nodeCount, bits) => {
+            }),
+            getMmdbNode: ((buffer, position, nodeSize) => {
+                return BufferCursor({ buffer, position }).readMmdbNode(nodeSize).value;
+            }),
+            getMmdbDataOffset: ((buffer, nodeSize, nodeCount, bits) => {
                 let nodePointer = 0;
                 for (const bit of bits) {
-                    const node = _it.getMmdbNode(buffer, nodePointer * nodeSize, nodeSize);
+                    const node = _self.getMmdbNode(buffer, nodePointer * nodeSize, nodeSize);
                     if (bit === 0) {
                         nodePointer = node.left;
                     } else {
@@ -549,8 +633,8 @@ const { MMDB } = (() => {
                 }
                 const dataOffset = (nodePointer - nodeCount) - 16;
                 return dataOffset;
-            };
-            _it.bitsFromAddressString = (addressString, bitLength) => {
+            }),
+            bitsFromAddressString: ((addressString, bitLength) => {
                 {
                     const match = addressString.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
                     if (match != null) {
@@ -563,17 +647,22 @@ const { MMDB } = (() => {
                     }
                 }
                 return undefined;
-            };
-            _it.buffer = undefined;
+            }),
+            buffer: undefined,
+            parameters: undefined,
+        });
 
-            /** @type {MMDB} */
-            const it = {};
-            it.load = async () => {
-                _it.buffer = await std.fs.promises.readFile(_options.mmdbFilePath);
-                const metadataPosition = _it.findMmdbMetadataOffset(_it.buffer);
-                const metadataDataField = _it.getMmdbDataField(_it.buffer, metadataPosition);
+        /** @type {Self} */
+        const self = ({
+            _MMDB: (() => {
+                return _self;
+            }),
+            load: (async () => {
+                _self.buffer = await fs.promises.readFile(_options.mmdbFilePath);
+                const metadataPosition = _self.findMmdbMetadataOffset(_self.buffer);
+                const metadataDataField = _self.getMmdbDataField(_self.buffer, metadataPosition);
                 /** @type {MMDBMetadata} */
-                const metadata = ts.lazy(_it.decodeMmdbDataField(_it.buffer, -1, metadataDataField));
+                const metadata = __cast__(_self.decodeMmdbDataField(_self.buffer, -1, metadataDataField));
                 const ipVersion = metadata.ip_version;
                 const bitLength = (() => {
                     switch (ipVersion) {
@@ -593,7 +682,7 @@ const { MMDB } = (() => {
                 const nodeCount = metadata.node_count;
                 const binarySearchTreeSectionSize = nodeSize * nodeCount;
                 const dataSectionPosition = binarySearchTreeSectionSize + 16;
-                _it.parameters = {
+                _self.parameters = {
                     metadata,
                     ipVersion,
                     bitLength,
@@ -601,40 +690,39 @@ const { MMDB } = (() => {
                     nodeSize,
                     nodeCount,
                     binarySearchTreeSectionSize,
-                    dataSectionPosition
+                    dataSectionPosition,
                 };
-            };
-            it.lookup = async (query) => {
-                if (_it.buffer == null || _it.parameters == null) {
+            }),
+            lookup: (async (query) => {
+                if (_self.buffer == null || _self.parameters == null) {
                     throw new Error();
                 }
-                const { bitLength, nodeSize, nodeCount, dataSectionPosition } = _it.parameters;
-                const bits = _it.bitsFromAddressString(query.address, bitLength);
+                const { bitLength, nodeSize, nodeCount, dataSectionPosition } = _self.parameters;
+                const bits = _self.bitsFromAddressString(query.address, bitLength);
                 if (bits == null) {
                     return undefined;
                 }
-                const dataOffset = _it.getMmdbDataOffset(_it.buffer, nodeSize, nodeCount, bits);
+                const dataOffset = _self.getMmdbDataOffset(_self.buffer, nodeSize, nodeCount, bits);
                 if (dataOffset < 0) {
                     return undefined;
                 }
                 const dataPosition = dataSectionPosition + dataOffset;
-                const dataDataField = _it.getMmdbDataField(_it.buffer, dataPosition);
+                const dataDataField = _self.getMmdbDataField(_self.buffer, dataPosition);
                 /** @type {MMDBData} */
-                const data = ts.lazy(_it.decodeMmdbDataField(_it.buffer, dataSectionPosition, dataDataField));
+                const data = __cast__(_self.decodeMmdbDataField(_self.buffer, dataSectionPosition, dataDataField));
                 return data;
-            };
-            it.unload = async () => {
-                _it.buffer = undefined;
-                _it.parameters = undefined;
-            };
-            return it;
+            }),
+            unload: (async () => {
+                _self.buffer = undefined;
+                _self.parameters = undefined;
+            }),
+        });
 
-        };
-        return { MMDB };
+        return self;
 
-    })();
+    });
 
-    return { MMDB };
+    return { MMDB: Constructor };
 
 })();
 
