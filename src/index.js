@@ -8,9 +8,9 @@
 
 const { Helper } = (() => {
 
-    /** @typedef {import('../types').MMDB.Helper._Self} _Self */
-    /** @typedef {import('../types').MMDB.Helper.Self} Self */
-    /** @typedef {import('../types').MMDB.Helper.Constructor} Constructor */
+    /** @typedef {import('..').MMDB.Helper._Self} _Self */
+    /** @typedef {import('..').MMDB.Helper.Self} Self */
+    /** @typedef {import('..').MMDB.Helper.Constructor} Constructor */
 
     /** @type {Constructor} */
     const Constructor = ((options) => {
@@ -57,12 +57,12 @@ const { Helper } = (() => {
 
 const { BufferCursor } = (() => {
 
-    /** @typedef {import('../types').MMDB.Types.Array} MMDBArray */
-    /** @typedef {import('../types').MMDB.Types.Map} MMDBMap */
+    /** @typedef {import('..').MMDB.Types.Array} MMDBArray */
+    /** @typedef {import('..').MMDB.Types.Map} MMDBMap */
 
-    /** @typedef {import('../types').MMDB.BufferCurosr._Self} _Self */
-    /** @typedef {import('../types').MMDB.BufferCurosr.Self} Self */
-    /** @typedef {import('../types').MMDB.BufferCurosr.Constructor} Constructor */
+    /** @typedef {import('..').MMDB.BufferCurosr._Self} _Self */
+    /** @typedef {import('..').MMDB.BufferCurosr.Self} Self */
+    /** @typedef {import('..').MMDB.BufferCurosr.Constructor} Constructor */
 
     const helper = Helper({});
 
@@ -498,14 +498,14 @@ const { BufferCursor } = (() => {
 
 const { MMDB } = (() => {
 
-    /** @typedef {import('../types').MMDB.Types.Array} MMDBArray */
-    /** @typedef {import('../types').MMDB.Types.Data} MMDBData */
-    /** @typedef {import('../types').MMDB.Types.Map} MMDBMap */
-    /** @typedef {import('../types').MMDB.Types.Metadata} MMDBMetadata */
+    /** @typedef {import('..').MMDB.Types.Array} MMDBArray */
+    /** @typedef {import('..').MMDB.Types.Data} MMDBData */
+    /** @typedef {import('..').MMDB.Types.Map} MMDBMap */
+    /** @typedef {import('..').MMDB.Types.Metadata} MMDBMetadata */
 
-    /** @typedef {import('../types').MMDB.MMDB._Self} _Self */
-    /** @typedef {import('../types').MMDB.MMDB.Self} Self */
-    /** @typedef {import('../types').MMDB.MMDB.Constructor} Constructor */
+    /** @typedef {import('..').MMDB.MMDB._Self} _Self */
+    /** @typedef {import('..').MMDB.MMDB.Self} Self */
+    /** @typedef {import('..').MMDB.MMDB.Constructor} Constructor */
 
     const fs = require('fs');
 
