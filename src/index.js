@@ -13,7 +13,7 @@ const { Helper } = (() => {
     /** @typedef {import('..').MMDB.Helper.Constructor} Constructor */
 
     /** @type {Constructor} */
-    const Constructor = ((options) => {
+    const constructor = ((options) => {
 
         const _options = ({});
 
@@ -51,7 +51,7 @@ const { Helper } = (() => {
 
     });
 
-    return { Helper: Constructor };
+    return { Helper: constructor };
 
 })();
 
@@ -67,7 +67,7 @@ const { BufferCursor } = (() => {
     const helper = Helper({});
 
     /** @type {Constructor} */
-    const Constructor = ((options) => {
+    const constructor = ((options) => {
 
         const _options = ({
             buffer: options.buffer,
@@ -96,13 +96,13 @@ const { BufferCursor } = (() => {
                 return _options.position;
             }),
             set: ((position) => {
-                return Constructor({
+                return constructor({
                     buffer: _options.buffer,
                     position,
                 });
             }),
             add: ((size) => {
-                return Constructor({
+                return constructor({
                     buffer: _options.buffer,
                     position: _options.position + size,
                 });
@@ -492,7 +492,7 @@ const { BufferCursor } = (() => {
 
     });
 
-    return { BufferCursor: Constructor };
+    return { BufferCursor: constructor };
 
 })();
 
@@ -513,7 +513,7 @@ const { MMDB } = (() => {
     const __cast__ = (value) => value;
 
     /** @type {Constructor} */
-    const Constructor = ((options) => {
+    const constructor = ((options) => {
 
         const _options = ({
             mmdbFilePath: options.mmdbFilePath,
@@ -722,7 +722,7 @@ const { MMDB } = (() => {
 
     });
 
-    return { MMDB: Constructor };
+    return { MMDB: constructor };
 
 })();
 
